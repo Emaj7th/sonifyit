@@ -54,8 +54,8 @@ The idea for this first came up around 2005 when I was doing a lot of brainstorm
 
 ![Mix UI](img/Remix_Spider_V2_Mix.png)
 
-![Content UI](img\Remix_Spider_V2_Content.png)
+![Content UI](img/Remix_Spider_V2_Content.png)
 
 - **Version 3 - 2016: Sonify It (the current version) - Web Application**: While frustred with the demise of Version 2, I searched the Web to consider the state of audio and MIDI either on the server or client (browser). I found there were very good javascript libraries of code I could build upon to achive my plans directly in the browser. Once I tested these javascript libraries, I dedicated a few hours here and there over serveral months working out the process, logic and producing a conversion table. Once the conversion table was complete, and a few development sessions, I had a working prototype. Once it was working, I picked the name and domain: SonifyIt.com.
 
-![Sonify It](img\SonifyIt_V3.png)
+![Sonify It](img/SonifyIt_V3.png)
