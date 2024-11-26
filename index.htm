@@ -473,17 +473,7 @@ Using online tools and a spreadsheet, I started with a full listing of every cha
 <script src="js/JZZ.MidiFile.js" type="text/javascript"></script>
 <script src="js/sonifyitMain.js" type="text/javascript"></script>
 <script>
-function process(){
-	MIDI.setVolume(0, 127);	//channel 1
-	MIDI.setVolume(1, 110);	//channel 2
-	MIDI.programChange(0, MIDI.GM.byName["orchestral_harp"].number);
-	MIDI.programChange(1, MIDI.GM.byName["tubular_bells"].number);
-	//MIDI.programChange(2, MIDI.GM.byName["synth_drum"].number);
-	MIDI.noteOn(0, 36, 80, 0);
-	MIDI.noteOn(1, 48, 80, 0);	
-	MIDI.noteOff(0, 36, 1.5);
-	MIDI.noteOff(1, 48, 1.5);
-};
+ 
 $('#stop').on("click", function(){
 		MIDI.stopAllNotes();
 	});
@@ -495,7 +485,6 @@ window.onload = function(){
 			console.log(state, progress);
 		},
 		onsuccess: function(){
-			process();
 			$('#ajaxpanel').html('<div class="success">SonifyIt is Ready!</div>');
 		}
 	});
