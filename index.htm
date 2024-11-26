@@ -1,0 +1,516 @@
+<!DOCTYPE HTML>
+<html xmlns = "http://www.w3.org/1999/xhtml"><head>
+	<title>Sonify.it</title>
+  /<!--	launch local server: python -m http.server 8000  -->
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<!--	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<meta name="description" content="" />-->
+	<!-- CSS -->
+	<link rel="stylesheet" type="text/css" href="css/style.css" media="all" />
+    <link rel="stylesheet" type="text/css" href="js/Tipr/tipr/tipr.css">
+	<!--<link rel="shortcut icon" href="favicon.ico">-->
+	<!-- shim -->
+	<script src="js/MIDIjs/inc/shim/Base64.js" type="text/javascript"></script>
+	<script src="js/MIDIjs/inc/shim/Base64binary.js" type="text/javascript"></script>
+	<script src="js/MIDIjs/inc/shim/WebAudioAPI.js" type="text/javascript"></script>
+	<!-- jasmid -->
+	<script src="js/MIDIjs/inc/jasmid/stream.js"></script>
+	<script src="js/MIDIjs/inc/jasmid/midifile.js"></script>
+	<script src="js/MIDIjs/inc/jasmid/replayer.js"></script>    
+	<!-- midi.js package -->
+	<script src="js/MIDIjs/js/midi/audioDetect.js" type="text/javascript"></script>
+	<script src="js/MIDIjs/js/midi/gm.js" type="text/javascript"></script>
+	<script src="js/MIDIjs/js/midi/loader.js" type="text/javascript"></script>
+	<script src="js/MIDIjs/js/midi/plugin.audiotag.js" type="text/javascript"></script>
+	<script src="js/MIDIjs/js/midi/plugin.webaudio.js" type="text/javascript"></script>
+	<script src="js/MIDIjs/js/midi/plugin.webmidi.js" type="text/javascript"></script>
+    <script src="js/MIDIjs/js/midi/player.js" type="text/javascript"></script>
+	<!-- utils -->
+	<script src="js/MIDIjs/js/util/dom_request_xhr.js" type="text/javascript"></script>
+	<script src="js/MIDIjs/js/util/dom_request_script.js" type="text/javascript"></script>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script type="text/javascript" src="js/Tipr/tipr/tipr.js"></script>
+</head>
+<body>
+<div id="mainBody">
+<!--<div class="bannerAd">this is a banner ad...</div> -->
+<div id="sec1" class="contentSection">
+	<form id="sonifyForm" name="sonifyForm" enctype="multipart/form-data" action="#">
+    <input name="channels" id="channels" type="hidden" value="1">
+ 	<!-- MAIN SETTINGS -->
+    <div class="formBlock" style="float:left;width:270px; height:579px; margin-left:8px">
+      <div class="sectionHeader">
+  <img src="img/Logo.png" width="140" height="45" alt="Sonify It" style="float:left; margin-right:20px" />
+  text to music<br style="clear:both" /><br />listen to any text or data</div>
+  
+	<div id="ajaxpanel"><!-- // --></div>
+    <div id="outputMIDI"></div>
+    
+      <div class="formItemBlock" style="margin-top:61px"><div class="formItemLabel">Key &amp; Scale
+      <div class="tipDiv tip" data-tip="Key: the root note value used with scale to define a set of notes that can be played together. Scales: sets of notes that can be played together that are based on specific number of steps between the notes"><img src="img/help_gray.png" width="16" height="16" alt="info" class="infoIcon"/></div></div>
+        <div class="formItemField styled-selectSm" style="float:left; margin-left:14px"><select name="key" id="key" data-native-menu="false" class="formField">
+        <option value="0">C</option>
+        <option value="1">Db/C#</option>
+        <option value="2">D</option> 
+        <option value="3">Eb/D#</option>
+        <option value="4">E</option>
+        <option value="5">F</option> 
+        <option value="6">Gb/F#</option>
+        <option value="7">G</option>
+        <option value="8">Ab/G#</option> 
+        <option value="9">A</option>
+        <option value="10">Bb/A#</option>
+        <option value="11">B</option>
+      </select></div><div class="formItemField styled-select"><select name="scale" id="scale" data-native-menu="false" class="formField">
+        <option value="0,2,4,5,7,9,11,12">Major</option>
+        <option value="0,2,3,5,7,8,10,12">Natural Minor</option>
+        <option value="0,2,3,5,7,8,11,12">Harmonic Minor</option>
+        <option value="0,2,3,5,7,9,11,12">Melodic Minor</option>
+        <option value="0,2,4,7,9,12">Major Pentatonic</option>
+        <option value="0,3,5,7,10,12">Minor Pentatonic</option>
+        <option value="0,3,5,6,7,10,12">Blues</option>
+        <option value="0,2,4,6,8,10,12">Augmented</option>
+        <option value="0,2,3,5,6,8,9,11,12">Diminished</option>
+        <option value="0,1,4,5,7,8,10,12">Phrygian-Dominant</option>
+        <option value="0,2,3,5,7,9,10,12">Dorian</option>
+        <option value="0,1,3,5,7,8,10,12">Phrygian</option>
+        <option value="0,2,4,6,7,9,11,12">Lydian</option>
+        <option value="0,2,4,5,7,9,10,12">Mixolydian</option>
+        <option value="0,1,3,5,6,8,10,12">Locrian</option>
+        <option value="0,2,3,5,7,9,11,12">Melodic Minor (Ascending)</option>
+        <option value="0,2,4,6,8,9,11,12">Lydian augmented</option>
+        <option value="0,1,3,4,6,8,10,12">Super Locrian</option>
+        <option value="0,1,4,6,8,10,11,12">Enigmatic</option>
+        <option value="0,1,4,5,7,8,11,12">Double Harmonic</option>
+        <option value="0,2,3,6,7,8,11,12">Hungarian Minor</option>
+        <option value="0,1,4,5,6,8,11,12">Persian</option>
+        <option value="0,2,4,5,6,8,10,12">Arabian</option>
+        <option value="0,1,5,7,8,12">Japanese</option>
+        <option value="0,2,5,7,10,12">Egyptian</option>
+        <option value="0,2,3,7,8,12">Hirajoshi</option>
+      </select></div> 
+  	</div>
+  	<div class="formItemBlock"><div class="formItemLabel">Tempo
+     <div class="tipDiv tip" data-tip="displayed as beats per minute, the speed of of the song"><img src="img/help_gray.png" width="16" height="16" alt="info" class="infoIcon"/></div></div>
+        <div style="width:240px;"><input name="tempo" id="tempo" data-track-theme="a" data-theme="a" min="20" max="320" value="100" type="range" oninput="tempoOutputId.value = tempo.value">
+      <output name="tempoOutput" id="tempoOutputId" class="formFeedback" style="width:45px">100</output></div>
+  	</div>
+   <div class="formItemBlock"><div class="formItemLabel">Output
+      <div class="tipDiv tip" data-tip="options to lisen to the music output now, or to generate a MIDI file that can be played in a other music software">
+      <img src="img/help_gray.png" width="16" height="16" alt="info" class="infoIcon"/></div></div>
+      <div class="formItemField">
+      <input id="midiOut0" name="midiOutput" type="radio" value="0" checked> <label for="midiOut0">Listen</label> 
+      <!-- <input id="midiOut2" name="midiOutput" type="radio" value="2"> <label for="midiOut2">new</label>-->
+      <input id="midiOut1" name="midiOutput" type="radio" value="1"> <label for="midiOut1">Export</label>
+      </div>   
+  	</div>
+	<div style="text-align:center; margin:10px 10px 0 0">
+    <input value="STOP &#9724;" id="stop" type="button" class="btn" />
+    <input value="PLAY &#9654;" id="submit" type="submit" class="btn" /></div>
+    </div><!-- END MAIN SETTINGS-->
+    
+	<!-- CHANNEL 1-->
+	<div class="formBlock" style="float:left;width:270px; margin-left:8px">
+    <div class="formItemBlock">CHANNEL 1</div>
+    <textarea id="textSource0" class="textSource" cols="30" rows="6" maxlength="5000" placeholder="Enter Text or Data"></textarea>
+    	<div id="textarea_feedback0" class="formFeedback"></div><br class="clearBR" />
+	<div class="formItemBlock"><div class="formItemLabel">Volume
+    <div class="tipDiv tip" data-tip="adjust the overall volume of the music output"><img src="img/help_gray.png" width="16" height="16" alt="info" class="infoIcon"/></div></div>
+      <div style="width:240px;"><input name="volume0" id="volume0" data-track-theme="a" data-theme="a" min="1" max="127" value="120" type="range" oninput="volumeOutputId0.value = volume0.value"> 
+    <output name="volumeOutput" id="volumeOutputId0" class="formFeedback" style="width:45px">120</output></div>	
+    </div>
+    	<div class="formItemBlock"><div class="formItemLabel">Instrument
+    <div class="tipDiv tip" data-tip="select the instrument to use in the text to music conversion process"><img src="img/help_gray.png" width="16" height="16" alt="info" class="infoIcon"/></div></div>
+      <div class="formItemField styled-select"><select name="instrument0" id="instrument0" data-native-menu="false" class="formField">
+<option value="0" selected>acoustic piano</option>
+<option value="61">brass section</option>
+<option value="107">koto</option>
+<option value="46">orchestral harp</option>
+<option value="114">steel drums</option>
+<option value="14">tubular bells</option>
+<option value="11">vibraphone</option>
+<option value="13">xylophone</option>
+<option value="118">synth drums</option>
+<option value="49">string ensemble 2</option>
+<!--<option value="acoustic_grand_piano" selected>acoustic grand piano</option>
+<option value="brass_section">brass section</option>
+<option value="koto">koto</option>
+<option value="orchestral_harp">orchestral harp</option>
+<option value="steel_drums">steel drums</option>
+<option value="tubular_bells">tubular bells</option>
+<option value="vibraphone">vibraphone</option>
+<option value="xylophone">xylophone</option>-->
+</select></div>    
+    </div>
+	<div class="formItemBlock"><div class="formItemLabel">Note Set
+    <div class="tipDiv tip" data-tip="an option to use all note lengths, or just the standards: 1/16 up to whole"><img src="img/help_gray.png" width="16" height="16" alt="info" class="infoIcon"/></div></div>
+		<div class="formItemField">
+        <input id="noteSet00" name="noteSet0" type="radio" value="0" class="noteSet" checked> <label for="noteSet00">Standard</label> 
+        <input id="noteSet01" name="noteSet0" type="radio" value="1" class="noteSet"> <label for="noteSet01">Full</label>
+		</div>    
+    </div>    
+	<div class="formItemBlock"><div class="formItemLabel">Note Range
+    <div class="tipDiv tip" data-tip="Set the shortest and longest note value. By limiting the note lengths available to the conversion, you can create interesting patterns"><img src="img/help_gray.png" width="16" height="16" alt="info" class="infoIcon"/></div></div>
+      <div class="formItemField styled-select bothSets0" id="fullSet0" style="float:left"><select name="shortestNoteFull0" id="shortestNoteFull0" data-native-menu="false" class="formField">
+      <option value="1">Sixtyfourth</option>
+      <option value="2">Thirtysecond</option>
+      <option value="3">Triplet-sixteenth</option>
+      <option value="4" selected>Sixteenth</option>
+      <option value="5">Triplet-eighth</option>
+      <option value="6">Dotted-sixteenth</option>
+      <option value="7">Eighth</option>
+      <option value="8">Triplet-quarter</option>
+      <option value="9">Dotted-eighth</option>
+      <option value="10">Quarter</option>
+      <option value="11">Dotted-quarter</option>
+      <option value="12">Half</option>
+      <option value="13">Whole</option>
+	</select></div>
+       <div class="formItemField styled-select bothSets0" id="standardSet0" style="float:right"><select name="shortestNoteStd0" id="shortestNoteStd0" data-native-menu="false" class="formField">
+      <option value="1">Sixtyfourth</option>
+      <option value="2">Thirtysecond</option>
+      <option value="3" selected>Sixteenth</option>
+      <option value="4">Eighth</option>
+      <option value="5">Quarter</option>
+      <option value="6">Half</option>
+      <option value="7">Whole</option>
+	</select></div>
+    <div class="formItemField styled-select bothSets0" id="fullSet0Long"><select name="longestNoteFull0" id="longestNoteFull0" data-native-menu="false" class="formField">
+      <option value="1">Sixtyfourth</option>
+      <option value="2">Thirtysecond</option>
+      <option value="3">Triplet-sixteenth</option>
+      <option value="4">Sixteenth</option>
+      <option value="5">Triplet-eighth</option>
+      <option value="6">Dotted-sixteenth</option>
+      <option value="7">Eighth</option>
+      <option value="8">Triplet-quarter</option>
+      <option value="9">Dotted-eighth</option>
+      <option value="10">Quarter</option>
+      <option value="11">Dotted-quarter</option>
+      <option value="12">Half</option>
+      <option value="13" selected>Whole</option>
+	</select></div>
+       <div class="formItemField styled-select bothSets0" id="standardSet0Long"><select name="longestNoteStd0" id="longestNoteStd0" data-native-menu="false" class="formField">
+      <option value="1">Sixtyfourth</option>
+      <option value="2">Thirtysecond</option>
+      <option value="3">Sixteenth</option>
+      <option value="4">Eighth</option>
+      <option value="5">Quarter</option>
+      <option value="6">Half</option>
+      <option value="7" selected>Whole</option>
+	</select></div>
+    </div>
+  	<div class="formItemBlock"><div class="formItemLabel" >Octave Range
+    <div class="tipDiv tip" data-tip="The lowest and highest octave for this channel."><img src="img/help_gray.png" width="16" height="16" alt="info" class="infoIcon"/></div></div>
+      <div class="formItemField styled-selectSm" style="float:left; margin-left:40px"><select name="octaveLow0" id="octaveLow0" data-native-menu="false" class="formField">
+      <option value="0" selected>0</option>
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3" >3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+      <option value="6">6</option>
+	</select></div> 
+          <div class="formItemField styled-selectSm"><select name="octaveHigh0" id="octaveHigh0" data-native-menu="false" class="formField">
+      <option value="0">0</option>
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3" >3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+      <option value="6" selected>6</option>
+	</select></div>    
+    </div>
+	<div class="formItemBlock"><div class="formItemLabel" >Minimum Velocity
+    <div class="tipDiv tip" data-tip="the softest a note can be played. We recommend at least 50"><img src="img/help_gray.png" width="16" height="16" alt="info" class="infoIcon"/></div></div>
+      <div class="formItemField styled-selectSm"><select name="minVelocity0" id="minVelocity0" data-native-menu="false" class="formField">
+      <option value="1">1</option>
+      <option value="10">10</option>
+      <option value="20" >20</option>
+      <option value="30">30</option>
+      <option value="40">40</option>
+      <option value="50" selected>50</option>
+      <option value="60" >60</option>
+      <option value="70">70</option>
+      <option value="80">80</option>
+      <option value="90">90</option>
+      <option value="100">100</option>
+      <option value="110">110</option>
+      <option value="127">127</option>
+	</select></div>    
+    </div>
+	<div class="formItemBlock"><div class="formItemLabel" >Rest Length Multiplier
+    <div class="tipDiv tip" data-tip="allows you to have longer rests than the default - works as a multiplier"><img src="img/help_gray.png" width="16" height="16" alt="info" class="infoIcon"/></div></div>
+      <div class="formItemField styled-selectSm"><select name="maxRestLen0" id="maxRestLen0" data-native-menu="false" class="formField">
+      <option value="0">0</option>
+      <option value="1" selected>1</option>
+      <option value="2">2</option>
+      <option value="3" >3</option> 
+      <option value="4" >4</option> 
+	</select></div>    
+    </div>
+    </div><!-- end formBlock -->
+    
+	<div class="formBlock" style="float:right;width:270px; margin-right:8px">
+    <div class="formItemBlock">CHANNEL 2</div>
+        <textarea id="textSource1" class="textSource" cols="30" rows="6" maxlength="5000" placeholder="Enter Text or Data"></textarea>
+    	<div id="textarea_feedback1" class="formFeedback"></div><br class="clearBR" />
+	<div class="formItemBlock"><div class="formItemLabel">Volume
+    <div class="tipDiv tip" data-tip="adjust the overall volume of the music output"><img src="img/help_gray.png" width="16" height="16" alt="info" class="infoIcon"/></div></div>
+      <div style="width:240px;"><input name="volume1" id="volume1" data-track-theme="a" data-theme="a" min="1" max="127" value="120" type="range" oninput="volumeOutputId1.value = volume1.value"> 
+    <output name="volumeOutput" id="volumeOutputId1" class="formFeedback" style="width:45px">120</output></div>	
+    </div>
+    	<div class="formItemBlock"><div class="formItemLabel">Instrument
+    <div class="tipDiv tip" data-tip="select the instrument to use in the text to music conversion process"><img src="img/help_gray.png" width="16" height="16" alt="info" class="infoIcon"/></div></div>
+      <div class="formItemField styled-select"><select name="instrument1" id="instrument1" data-native-menu="false" class="formField">
+<option value="0" selected>acoustic piano</option>
+<option value="61">brass section</option>
+<option value="107">koto</option>
+<option value="46">orchestral harp</option>
+<option value="114">steel drums</option>
+<option value="14">tubular bells</option>
+<option value="11">vibraphone</option>
+<option value="13">xylophone</option>
+<option value="118">synth drums</option>
+<option value="49">string ensemble 2</option>
+<!--<option value="acoustic_grand_piano" selected>acoustic grand piano</option>
+<option value="brass_section">brass section</option>
+<option value="koto">koto</option>
+<option value="orchestral_harp">orchestral harp</option>
+<option value="steel_drums">steel drums</option>
+<option value="tubular_bells">tubular bells</option>
+<option value="vibraphone">vibraphone</option>
+<option value="xylophone">xylophone</option>-->
+    </select></div>    
+    </div>
+	<div class="formItemBlock"><div class="formItemLabel">Note Set
+    <div class="tipDiv tip" data-tip="an option to use all note lengths, or just the standards: 1/16 up to whole"><img src="img/help_gray.png" width="16" height="16" alt="info" class="infoIcon"/></div></div>
+		<div class="formItemField">
+        <input id="noteSet10" name="noteSet1" type="radio" value="0" class="noteSet" checked> <label for="noteSet10">Standard</label> 
+        <input id="noteSet11" name="noteSet1" type="radio" value="1" class="noteSet"> <label for="noteSet11">Full</label>
+		</div>    
+    </div>    
+	<div class="formItemBlock"><div class="formItemLabel">Note Range
+    <div class="tipDiv tip" data-tip="Set the shortest and longest note value. By limiting the note lengths available to the conversion, you can create interesting patterns"><img src="img/help_gray.png" width="16" height="16" alt="info" class="infoIcon"/></div></div>
+      <div class="formItemField styled-select bothSets1" id="fullSet1" style="float:left"><select name="shortestNoteFull1" id="shortestNoteFull1" data-native-menu="false" class="formField">
+      <option value="1">Sixtyfourth</option>
+      <option value="2">Thirtysecond</option>
+      <option value="3">Triplet-sixteenth</option>
+      <option value="4" selected>Sixteenth</option>
+      <option value="5">Triplet-eighth</option>
+      <option value="6">Dotted-sixteenth</option>
+      <option value="7">Eighth</option>
+      <option value="8">Triplet-quarter</option>
+      <option value="9">Dotted-eighth</option>
+      <option value="10">Quarter</option>
+      <option value="11">Dotted-quarter</option>
+      <option value="12">Half</option>
+      <option value="13">Whole</option>
+	</select></div>
+       <div class="formItemField styled-select bothSets1" id="standardSet1" style="float:left"><select name="shortestNoteStd1" id="shortestNoteStd1" data-native-menu="false" class="formField">
+      <option value="1">Sixtyfourth</option>
+      <option value="2">Thirtysecond</option>
+      <option value="3" selected>Sixteenth</option>
+      <option value="4">Eighth</option>
+      <option value="5">Quarter</option>
+      <option value="6">Half</option>
+      <option value="7">Whole</option>
+	</select></div>
+    <div class="formItemField styled-select bothSets1" id="fullSet1Long"><select name="longestNoteFull1" id="longestNoteFull1" data-native-menu="false" class="formField">
+      <option value="1">Sixtyfourth</option>
+      <option value="2">Thirtysecond</option>
+      <option value="3">Triplet-sixteenth</option>
+      <option value="4">Sixteenth</option>
+      <option value="5">Triplet-eighth</option>
+      <option value="6">Dotted-sixteenth</option>
+      <option value="7">Eighth</option>
+      <option value="8">Triplet-quarter</option>
+      <option value="9">Dotted-eighth</option>
+      <option value="10">Quarter</option>
+      <option value="11">Dotted-quarter</option>
+      <option value="12">Half</option>
+      <option value="13" selected>Whole</option>
+	</select></div>
+       <div class="formItemField styled-select bothSets1" id="standardSet1Long"><select name="longestNoteStd1" id="longestNoteStd1" data-native-menu="false" class="formField">
+      <option value="1">Sixtyfourth</option>
+      <option value="2">Thirtysecond</option>
+      <option value="3">Sixteenth</option>
+      <option value="4">Eighth</option>
+      <option value="5">Quarter</option>
+      <option value="6">Half</option>
+      <option value="7" selected>Whole</option>
+	</select></div> 
+    </div>
+  	<div class="formItemBlock"><div class="formItemLabel" >Octave Range
+    <div class="tipDiv tip" data-tip="The lowest and highest octave for this channel."><img src="img/help_gray.png" width="16" height="16" alt="info" class="infoIcon"/></div></div>
+      <div class="formItemField styled-selectSm" style="float:left; margin-left:40px"><select name="octaveLow1" id="octaveLow1" data-native-menu="false" class="formField">
+      <option value="0" selected>0</option>
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3" >3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+      <option value="6">6</option>
+	</select></div> 
+          <div class="formItemField styled-selectSm"><select name="octaveHigh1" id="octaveHigh1" data-native-menu="false" class="formField">
+      <option value="0">0</option>
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3" >3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+      <option value="6" selected>6</option>
+	</select></div>    
+    </div>
+	<div class="formItemBlock"><div class="formItemLabel" >Minimum Velocity
+    <div class="tipDiv tip" data-tip="the softest a note can be played. We recommend at least 50"><img src="img/help_gray.png" width="16" height="16" alt="info" class="infoIcon"/></div></div>
+      <div class="formItemField styled-select"><select name="minVelocity1" id="minVelocity1" data-native-menu="false" class="formField">
+      <option value="1">1</option>
+      <option value="10">10</option>
+      <option value="20" >20</option>
+      <option value="30">30</option>
+      <option value="40">40</option>
+      <option value="50" selected>50</option>
+      <option value="60" >60</option>
+      <option value="70">70</option>
+      <option value="80">80</option>
+      <option value="90">90</option>
+      <option value="100">100</option>
+      <option value="110">110</option>
+      <option value="127">127</option>
+	</select></div>    
+    </div>    
+	<div class="formItemBlock"><div class="formItemLabel" >Rest Length Multiplier
+    <div class="tipDiv tip" data-tip="allows you to have longer rests than the default - works as a multiplier"><img src="img/help_gray.png" width="16" height="16" alt="info" class="infoIcon"/></div></div>
+      <div class="formItemField styled-selectSm"><select name="maxRestLen1" id="maxRestLen1" data-native-menu="false" class="formField">
+      <option value="0">0</option>
+      <option value="1" selected>1</option>
+      <option value="2">2</option>
+      <option value="3" >3</option> 
+      <option value="4" >4</option> 
+	</select></div>    
+    </div>
+    </div>
+     <br class="clearBR" /></div>      
+  </form>
+<!--  <div id="noteOutput">&nbsp;</div>-->
+	</div>
+<div id="sec2" class="infoSection" >
+<div id="tabs-container">
+    <ul class="tabs-menu">
+        <li class="current"><a href="#tab-1">About</a></li>
+        <li><a href="#tab-2">Q &amp; A</a></li>
+        <li><a href="#tab-3">Tips</a></li>
+    </ul>
+    <div class="tab">
+        <div id="tab-1" class="tab-content">
+            <strong>Created With</strong>:
+            <ul>
+            <li><a href="https://github.com/mudcube/MIDI.js">MIDI.js</a></li>
+            <li><a href="https://github.com/gleitz/midi-js-soundfonts">MIDI soundfonts</a></li>
+            <li><a href="https://github.com/jazz-soft/JZZ">JZZ.Midi.js</a></li>
+            <li><a href="http://jquery.com/">jquery.js</a></li>
+            <li><a href="http://www.tipue.com/tipr/">tipr.js</a></li>
+            </ul>
+            <strong>Created By</strong>:
+          <blockquote>
+          Sonic Wallpaper (Gideon Marken)
+          </blockquote>
+            <strong>How it Works</strong>:<br /><br />
+In order for this to have interesting output, it had to avoid a simple and direct one-to-one relationship between character and number. If you use a one-to-one relationship, the output would be very limited and be filled with repeating musical phrases. For example, consider the <a href="https://en.wikipedia.org/wiki/Most_common_words_in_English" target="ext">top 100 most common English words</a>. Each of these words would always translate to the same musical progression. The challenge here, was to find a logical conversion method based on more complex relationships and remain consistent. There is nothing random happing here, and with a few tests, you'll find this is true, but you'll also find there are rules being applied. The following explains how this works and the rules that apply. 
+        <br /><br />
+Using online tools and a spreadsheet, I started with a full listing of every character and number, and converted to binary, hexadecimal, and decimal values. With hexadecimal, any generated text weas then converted again, until there were only numbers. These values were then listed in a table, which were then processed again using basic math to create a final table of numeric values. I'm sure this could work with a different process which would result in a different conversion table. In fact, I hope to offer alternate conversion tables as a feature in later versions. 
+        <br /><br />
+        When you submit the form, each word is extracted using the space as an identifier, then each character is looked up in this conversion table, where multiple values are returned. These values are then processed based on the settings on the form. Each note also gains an offset value based on the length of the word/string it is within. This is why you get a different result if you enter, "111" or "1111" - while the character "1" has a mapping, these two "words" have different offset values - the first being 3, the second being 4.  The resulting values define the octave, note value, velocity and duration of each note. The application also uses spaces to generate rests, which for now is using the same duration assigned to the previous note value.
+        <br /><br />
+        For the final output, the application can then take your resulting text to music conversion, and either play it live in the browser, or output it to a MIDI file for those who are musicians with midi software. 
+        <br /><br />
+        <strong>Fine Tuning</strong>:
+        <br /><br />
+        The initial version successfully generated valid musical output, but it was usually chaotic and didn't "feel" right. After studying the output, I realized I needed to tame it by applying some common musical limitations.  Most musical phrases have the following attributes as limitations by design:
+        <ul>
+            <li><strong>Maximum note distance (fixed)</strong> - most musical phrases utilize a maximum distance between notes, and in most cases it is an octave. In this application, the maximum number of octaves between two notes is limited to one. This means that the next note to be played can be within the current octave, or the octave below it, or the octave above it. </li>
+            <li><strong>Maximum velocity variance (fixed)</strong> - most musical phrases don't see a large change in the velocity between notes. In this application, the velocity can only increase or decrease a maximum of 6 values per note.</li>
+             <li><strong>Minimum velocity (setting)</strong> - after converting dozens of strings of text, I found the output worked best if there was a mimiumun velocity. I prefer setting this to 50, but feel free to set it however you like.</li>           
+            <li><strong>Note Values (setting)</strong> - most musical phrases use a smaller sub-set of note values that doesn't include triplets or dotted notes. In this application, you can select to limit the output to the standard set of note values, or use the full set including triplets and dotted notes. </li>
+        </ul>
+        <strong>Concept Origins</strong>:<br /><br />
+        The idea for this first came up around 2005 when I was doing a lot of brainstorming about the Web. I was looking for ways where I could be creative with technology which would result in new ways for other people to express themselves creatively while removing the experience and knowledge barriers that prevent most people from generating or participating in creative works. This effort resulted in to core ideas, Remix Spider - a means to remix the Web, and... the other one isn't built yet! Remix Spider evolved into SonifyIt, the site you see here today.
+        <ol>
+        <li><strong>Version 1 - 2005: Remix Spider</strong> - Screen Designs only: The original idea was a local application that would work with multiple channels of data and allow a someone to use general midi sounds or if a musician, route the MIDI data to their MIDI instruments. The application would 'spider' the data, or page, or RSS feed, etc. from the Web, even pulling down images, and resuling in what could be called a "remix browser." The idea quickly became too complicated and was saved off to the directory where I keep random projects and ideas. Here are two of the screen designs: <a href="img/Remix_Spider_V1_SpiderUI.png" target="screenshot">Spider UI</a> / <a href="img/Remix_Spider_V1_Mixer.png" target="screenshot">Mixer UI</a> </li>
+        <li><strong>Version 2 - 2015: Remix Spider</strong> - PC Application: I found a development solution called Flowstone that would allow you to create PC applications, and more specifically, the means to create a virtual synthesizer. Flowstone also supports the Ruby programminmg language, which I thought should do the trick, so I finally started to build the idea out. Unfortunately, Flowstone is stuck in 32bit, PC only, and a bit quirky. While I was able to create the instrument side, and part of the text parsing, I aborted the effort after realizing few would ever install the applicaiton and that Flowstone's future was likely dead. This version also failed because it took the idea in a wrong direction. The target audience was 'everyone,' but I designed something for musicians. While V2 is very different from V1, they are both what I would call 'remix browsers.' Here are the two screens of the application: <a href="img/Remix_Spider_V2_Mix.png" target="screenshot">Mix UI</a> / <a href="img/Remix_Spider_V2_Content.png" target="screenshot">Content UI</a></li>
+        <li><strong>Version 3 - 2016: Sonify It</strong> - Web Application: While frustred with the demise of Version 2, I searched the Web to consider the state of audio and MIDI either on the server or client (browser). I found there were very good javascript libraries of code I could build upon to achive my plans directly in the browser. Once I tested these javascript libraries, I dedicated a few hours here and there over serveral months working out the process, logic and producing a conversion table. Once the conversion table was complete, and a few development sessions, I had a working prototype. Once it was working, I picked the name and domain: SonifyIt.com.</li>
+        </ol>
+        </div>
+        <div id="tab-2" class="tab-content">
+          <ol>
+			<li>Q: What is the full range of supported notes?<br />
+                  A: A0-C8</li>
+			<li>Q: Why can't I 'sequence' a repeating pattern using the same words or characters over and over?<br />
+                  A: This is due to the music being relational, where each not that is executed is based in part by the note before it. This is also due to the rules within the conversion script.</li>     
+         	<li>Q: Can I do anything I want with the output from this site/application?<br />
+                  A: Yes, of course.</li>
+         <li>Q: Can you add more instruments?<br />
+                  A: Yes, but not at this time.</li>
+          </ol>
+        </div>
+        <div id="tab-3" class="tab-content">
+		<ul>
+        	<li>Ambient Music - </li>
+			<li>Drone - </li>
+            <li>Good Settings - </li>
+            <li>Analog Step Sequencer - </li>
+        </ul>
+        </div>
+    </div>
+</div>
+	<br class="clearBR" />
+</div>
+</div>
+<br />
+<script type="text/javascript" src="js/sonifyitData.min.js"></script>
+<script src="js/JZZ.Midi.js" type="text/javascript"></script>
+<script src="js/JZZ.MidiFile.js" type="text/javascript"></script>
+<script src="js/sonifyitMain.js" type="text/javascript"></script>
+<script>
+function process(){
+	MIDI.setVolume(0, 127);	//channel 1
+	MIDI.setVolume(1, 110);	//channel 2
+	MIDI.programChange(0, MIDI.GM.byName["orchestral_harp"].number);
+	MIDI.programChange(1, MIDI.GM.byName["tubular_bells"].number);
+	//MIDI.programChange(2, MIDI.GM.byName["synth_drum"].number);
+	MIDI.noteOn(0, 36, 80, 0);
+	MIDI.noteOn(1, 48, 80, 0);	
+	MIDI.noteOff(0, 36, 1.5);
+	MIDI.noteOff(1, 48, 1.5);
+};
+$('#stop').on("click", function(){
+		MIDI.stopAllNotes();
+	});
+window.onload = function(){
+		MIDI.loadPlugin({
+		soundfontUrl: "js/soundfont/",
+		instrument: ["acoustic_grand_piano","xylophone","orchestral_harp","koto","steel_drums","tubular_bells","brass_section","vibraphone","synth_drum","string_ensemble_2"],
+		onprogress: function(state, progress) {
+			console.log(state, progress);
+		},
+		onsuccess: function(){
+			process();
+			$('#ajaxpanel').html('<div class="success">SonifyIt is Ready!</div>');
+		}
+	});
+};
+$(document).ready(function() {
+	$('.tip').tipr();
+	$(".tabs-menu a").click(function(event) {
+        event.preventDefault();
+        $(this).parent().addClass("current");
+        $(this).parent().siblings().removeClass("current");
+        var tab = $(this).attr("href");
+        $(".tab-content").not(tab).css("display", "none");
+        $(tab).fadeIn();
+    });
+});
+</script>
+</body>
+</html>
